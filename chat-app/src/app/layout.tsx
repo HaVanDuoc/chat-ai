@@ -14,7 +14,7 @@ export default function RootLayout({
             <body>
                 <NextUIProvider>
                     <ReduxProvider>
-                        <div className="relative flex flex-row max-h-screen text-[#0d0d0d] overflow-hidden">
+                        <div className="relative flex flex-row h-screen max-h-screen text-[#0d0d0d] overflow-hidden">
                             <div className="flex sticky top-0 left-0">
                                 <Sidebar />
                             </div>

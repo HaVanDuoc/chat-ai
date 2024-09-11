@@ -1,6 +1,7 @@
+'use client'
+
 import React, { useEffect, useRef } from "react";
 import Message, { MessageProps } from "./Message";
-
 
 const ChatContent = () => {
  
