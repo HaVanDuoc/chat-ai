@@ -11,6 +11,11 @@ import { RootState } from "@/redux/store";
 import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
 import ButtonNewChat from "@/components/ButtonNewChat";
 import { CHATS } from "@/dump";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { LuPencil, LuShare } from "react-icons/lu";
+import { RiArchive2Line } from "react-icons/ri";
+import { AiOutlineDelete } from "react-icons/ai";
+
 
 const Sidebar = () => {
     const isOpenSidebar = useAppSelector(
@@ -67,7 +72,27 @@ const Sidebar = () => {
                                 <ItemSidebar
                                     key={chat.chatId}
                                     content={chat.messages[0].message}
-                                    endContent={<FiMoreHorizontal size={20} />}
+                                    endContent={
+                                        <Dropdown placement="right-start">
+                                            <DropdownTrigger>
+                                                <Button
+                                                    variant="light"
+                                                    isIconOnly
+                                                    aria-label={`more-${chat.chatId}`}
+                                                >
+                                                    <FiMoreHorizontal size={20} />
+                                                </Button>
+                                            </DropdownTrigger>
+                                            <DropdownMenu aria-label="Static Actions">
+                                                <DropdownItem startContent={<LuShare />} key="Share">Share</DropdownItem>
+                                                <DropdownItem startContent={<LuPencil />} key="Rename">Rename</DropdownItem>
+                                                <DropdownItem startContent={<RiArchive2Line />} key="Archive">Archive</DropdownItem>
+                                                <DropdownItem startContent={<AiOutlineDelete />} key="Delete" className="text-danger" color="danger">
+                                                    Delete
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    }
                                     link={`/c/${chat.chatId}`}
                                 />
                             ))}

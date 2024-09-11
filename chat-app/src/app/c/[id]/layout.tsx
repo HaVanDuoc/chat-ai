@@ -86,6 +86,7 @@ const ChatLayout = ({
 
             <section className="sticky bottom-0 left-0 w-full max-w-screen-md mx-auto bg-white z-10">
                 <Input
+                    autoFocus
                     size="lg"
                     placeholder={`Message Chat AI`}
                     startContent={

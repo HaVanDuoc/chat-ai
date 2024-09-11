@@ -1,16 +1,16 @@
+import { MessageProps } from "@/interfaces";
 import React from "react";
 import { GiMagicHat } from "react-icons/gi";
 
-export interface MessageProps {
-    type: "send" | "receive";
-    content: string;
+interface Props {
+    message: MessageProps
 }
 
-const Message: React.FC<MessageProps> = ({ type, content }) => {
-    return type === "send" ? (
+const Message: React.FC<Props> = ({ message }) => {
+    return message.sender === "User" ? (
         // Message of user
         <div className="md:w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto">
-            {content}
+            {message.message}
         </div>
     ) : (
         // Message of AI
@@ -18,7 +18,7 @@ const Message: React.FC<MessageProps> = ({ type, content }) => {
             <div className="flex justify-center items-center mt-1">
                 <GiMagicHat size={24} className="opacity-80" />
             </div>
-            <div className="flex flex-row gap-5">{content}</div>
+            <div className="flex flex-row gap-5">{message.message}</div>
         </div>
     );
 };

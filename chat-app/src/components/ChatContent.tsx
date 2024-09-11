@@ -1,40 +1,48 @@
 'use client'
 
-import React, { useEffect, useRef } from "react";
-import Message, { MessageProps } from "./Message";
+import React, { useEffect, useRef, useState } from "react";
+import { CHATS } from "@/dump";
+import { useParams } from "next/navigation";
+import Message from "./Message";
+import { ChatBox } from "@/interfaces";
 
 const ChatContent = () => {
- 
-    const messageEndRef = useRef<HTMLDivElement | null>(null);
+    const [chat, setChat] = useState<ChatBox | null>(null)
 
-    // Scroll xuống đáy
+    const messageEndRef = useRef<HTMLDivElement | null>(null);
+    const { id: chatId } = useParams()
+
     useEffect(() => {
-        messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, []);
+        const chat = CHATS.filter((item) => item.chatId === Number(chatId))
+        setChat(chat[0] as ChatBox)
+    }, [chatId])
+
+    // Scroll xuống đáy sau khi tin nhắn được render
+    useEffect(() => {
+        if (chat?.messages) {
+            messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [chat?.messages]);
 
     return (
         <div className=" flex flex-1 flex-grow flex-col gap-10 w-full max-w-screen-md mx-auto">
-            {fake_messages &&
-                fake_messages.length > 0 &&
-                fake_messages.map((message, index) => {
+            {chat &&
+                chat.messages.length > 0 &&
+                chat.messages.map((message, index) => {
                     return (
                         <div
-                        ref={
-                            index === fake_messages.length - 1
-                                ? messageEndRef
-                                : null
-                        }
-                            className={` ${
-                                index === fake_messages.length - 1
-                                    ? "flex pb-10"
-                                    : ""
-                            }`}
+                            ref={
+                                index === chat.messages.length - 1
+                                    ? messageEndRef
+                                    : null
+                            }
+                            className={` ${index === chat.messages.length - 1
+                                ? "flex pb-10"
+                                : ""
+                                }`}
                             key={index}
                         >
-                            <Message
-                                type={message.type}
-                                content={message.content}
-                            />
+                            <Message message={message} />
                         </div>
                     );
                 })}
@@ -43,347 +51,3 @@ const ChatContent = () => {
 };
 
 export default ChatContent;
-
-const fake_messages: MessageProps[] = [
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-    {
-        content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat consequuntur quam dolor iure suscipit deleniti, illum similique quas eum officiis, rerum impedit eius aut? Doloribus cumque neque necessitatibus laboriosam. Quia?",
-        type: "send",
-    },
-    {
-        content:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. A architecto fuga mollitia, similique voluptatibus molestias expedita aliquam id, maiores error magni est! Harum corrupti necessitatibus reiciendis, dolorum debitis saepe a.",
-        type: "receive",
-    },
-];
-

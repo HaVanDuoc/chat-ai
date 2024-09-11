@@ -1,4 +1,4 @@
-export interface Message {
+export interface MessageProps {
     id: number;
     sender: "User" | "AI Assistant";
     message: string;
@@ -9,5 +9,5 @@ export interface Message {
 export interface ChatBox {
     chatId: number;
     participants: [string, string]; // ["User", "AI Assistant"]
-    messages: Message[];
+    messages: MessageProps[];
 }

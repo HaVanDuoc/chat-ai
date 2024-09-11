@@ -1,4 +1,4 @@
-import { ChatBox, Message } from '@/interfaces'
+import { ChatBox, MessageProps } from '@/interfaces'
 import { RootState } from '@/redux/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
@@ -21,7 +21,7 @@ export const chatBoxSlice = createSlice({
         },
         addMessage: (
             state,
-            action: PayloadAction<{ chatId: number; message: Message }>
+            action: PayloadAction<{ chatId: number; message: MessageProps }>
         ) => {
             const { chatId, message } = action.payload
             const chatBox = state.chatBoxes.find(box => box.chatId === chatId)
