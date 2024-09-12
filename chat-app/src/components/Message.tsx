@@ -3,13 +3,13 @@ import React from "react";
 import { GiMagicHat } from "react-icons/gi";
 
 interface Props {
-    message: MessageProps
+    message: MessageProps;
 }
 
 const Message: React.FC<Props> = ({ message }) => {
     return message.sender === "User" ? (
         // Message of user
-        <div className="md:w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto">
+        <div className="md:w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto break-words whitespace-pre-wrap">
             {message.message}
         </div>
     ) : (
@@ -18,7 +18,9 @@ const Message: React.FC<Props> = ({ message }) => {
             <div className="flex justify-center items-center mt-1">
                 <GiMagicHat size={24} className="opacity-80" />
             </div>
-            <div className="flex flex-row gap-5">{message.message}</div>
+            <div className="flex flex-row gap-5 break-words whitespace-pre-wrap">
+                {message.message}
+            </div>
         </div>
     );
 };

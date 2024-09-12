@@ -2,7 +2,7 @@ import { ChatBox, MessageProps } from "@/interfaces";
 import { addChatBox, addMessage } from "@/redux/features/chatbox/chatboxSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import { Input, Tooltip } from "@nextui-org/react";
+import { Textarea, Tooltip } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
@@ -17,8 +17,8 @@ const BottomBar = () => {
         (state: RootState) => state.chat.chatBoxes,
     );
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Prevent the default form submission behavior
+    const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+        e && e.preventDefault(); // Prevent the default form submission behavior
         if (!value || value === "") return;
         console.log("Message:", value);
 
@@ -63,12 +63,24 @@ const BottomBar = () => {
             onSubmit={handleSubmit}
             className="sticky bottom-0 left-0 w-full max-w-screen-md mx-auto bg-white z-10"
         >
-            <Input
+            <Textarea
+                type="submit"
+                minRows={1}
+                maxRows={5}
                 autoFocus
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 size="lg"
                 placeholder={`Message Chat AI`}
+                classNames={{
+                    innerWrapper: "items-center",
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSubmit(); // Call handleSubmit when Enter is pressed
+                    }
+                }}
                 startContent={
                     <div className="w-10 h-10 flex justify-center items-center cursor-pointer">
                         <Tooltip showArrow content="Attach file">
