@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
 import ItemSidebar from "@/components/ItemSidebar";
 import { GiMagicHat } from "react-icons/gi";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
 import ButtonNewChat from "@/components/ButtonNewChat";
@@ -15,12 +15,17 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@
 import { LuPencil, LuShare } from "react-icons/lu";
 import { RiArchive2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
+import { setChatBox } from "@/redux/features/chatbox/chatboxSlice";
 
 
 const Sidebar = () => {
-    const isOpenSidebar = useAppSelector(
-        (state: RootState) => state.sidebar.open,
-    );
+    const chats = useAppSelector((state: RootState) => state.chat.chatBoxes) // Get Box chats in redux
+    const isOpenSidebar = useAppSelector((state: RootState) => state.sidebar.open); // get status open of sidebar
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(setChatBox(CHATS))
+    }, [dispatch])
 
     return (
         <div
@@ -68,9 +73,9 @@ const Sidebar = () => {
                     <section className="flex flex-col gap-3 px-3">
                         <div className="text-xs font-bold px-3">Today</div>
                         <div className="flex flex-col w-full">
-                            {CHATS.map((chat) => (
+                            {chats.map((chat, index) => (
                                 <ItemSidebar
-                                    key={chat.chatId}
+                                    key={index}
                                     content={chat.messages[0].message}
                                     endContent={
                                         <Dropdown placement="right-start">

@@ -1,6 +1,6 @@
 export interface MessageProps {
     id: number;
-    sender: "User" | "AI Assistant";
+    sender: string;
     message: string;
     timestamp: string;
     seen: boolean;
@@ -8,6 +8,6 @@ export interface MessageProps {
 
 export interface ChatBox {
     chatId: number;
-    participants: [string, string]; // ["User", "AI Assistant"]
+    participants: string[],
     messages: MessageProps[];
 }

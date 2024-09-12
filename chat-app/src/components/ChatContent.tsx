@@ -1,21 +1,25 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from "react";
-import { CHATS } from "@/dump";
 import { useParams } from "next/navigation";
 import Message from "./Message";
 import { ChatBox } from "@/interfaces";
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 
 const ChatContent = () => {
     const [chat, setChat] = useState<ChatBox | null>(null)
-
-    const messageEndRef = useRef<HTMLDivElement | null>(null);
+    
     const { id: chatId } = useParams()
+    console.log("chat", chat)
+
+    const getChatBoxesRedux = useAppSelector((state: RootState) => state.chat.chatBoxes) // get chatBoxes in redux
+    const chatBox = getChatBoxesRedux.filter((item) => item.chatId === Number(chatId))[0] // chat with id
+    const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const chat = CHATS.filter((item) => item.chatId === Number(chatId))
-        setChat(chat[0] as ChatBox)
-    }, [chatId])
+        setChat(chatBox)
+    }, [chatId, chatBox])
 
     // Scroll xuống đáy sau khi tin nhắn được render
     useEffect(() => {

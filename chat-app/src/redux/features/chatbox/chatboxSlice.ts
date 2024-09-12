@@ -23,16 +23,17 @@ export const chatBoxSlice = createSlice({
             state,
             action: PayloadAction<{ chatId: number; message: MessageProps }>
         ) => {
-            const { chatId, message } = action.payload
-            const chatBox = state.chatBoxes.find(box => box.chatId === chatId)
-            if (chatBox) {
-                chatBox.messages.push(message)
+            const { chatId, message } = action.payload;
+            const index = state.chatBoxes.findIndex(box => box.chatId === chatId);
+
+            if (index >= 0) {
+                state.chatBoxes[index].messages?.push(message)
             }
         },
     },
 })
 
-export const { setChatBox } = chatBoxSlice.actions
+export const { setChatBox, addMessage, addChatBox } = chatBoxSlice.actions
 
 export const selectChatBoxes = (state: RootState) => state.chat.chatBoxes;
 
