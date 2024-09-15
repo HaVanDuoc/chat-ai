@@ -6,11 +6,11 @@ import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import * as React from "react";
 
-export interface IMainLayoutProps {
+export interface IExploreLayoutProps {
     children: React.ReactNode;
 }
 
-const ExploreLayout = (props: IMainLayoutProps) => {
+const ExploreLayout = (props: IExploreLayoutProps) => {
     const isOpenSidebar = useAppSelector(
         (state: RootState) => state.sidebar.open,
     );
