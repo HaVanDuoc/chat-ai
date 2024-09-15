@@ -1,7 +1,8 @@
 import React from "react";
 import { FiEdit } from "react-icons/fi";
-import { Tooltip, Link } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { pathPage } from "@/config";
+import Link from "next/link";
 
 const ButtonNewChat = ({ className }: { className?: string }) => {
     return (

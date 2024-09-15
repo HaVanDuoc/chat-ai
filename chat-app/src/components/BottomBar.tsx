@@ -22,42 +22,45 @@ const BottomBar = () => {
 
     const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
         e && e.preventDefault(); // Prevent the default form submission behavior
-        if (!value || value === "") return;
-        console.log("Message:", value);
 
-        if (chatId) {
-            const messageData: MessageProps = {
-                id: 11,
-                sender: "User",
-                message: value,
-                timestamp: new Date().toISOString(),
-                seen: false,
-            };
+        if (value && value !== "") {
+            console.log("Message:", value);
 
-            dispatch(
-                addMessage({ chatId: Number(chatId), message: messageData }),
-            );
+            if (chatId) {
+                const messageData: MessageProps = {
+                    id: 11,
+                    sender: "User",
+                    message: value,
+                    timestamp: new Date().toISOString(),
+                    seen: false,
+                };
 
-            setValue(""); // Clear the input field after submission
-        } else {
-            // Case create new chat
-            const chat: ChatBox = {
-                chatId: chatBoxes.length + 2,
-                participants: ["User", "AI Assistant"],
-                messages: [
-                    {
-                        id: 1,
-                        sender: "User",
-                        message: value,
-                        timestamp: new Date().toISOString(),
-                        seen: false,
-                    },
-                ],
-            };
+                dispatch(
+                    addMessage({
+                        chatId: Number(chatId),
+                        message: messageData,
+                    }),
+                );
+            } else {
+                // Case create new chat
+                const chat: ChatBox = {
+                    chatId: chatBoxes.length + 2,
+                    participants: ["User", "AI Assistant"],
+                    messages: [
+                        {
+                            id: 1,
+                            sender: "User",
+                            message: value,
+                            timestamp: new Date().toISOString(),
+                            seen: false,
+                        },
+                    ],
+                };
 
-            dispatch(addChatBox(chat));
+                dispatch(addChatBox(chat));
 
-            router.push(`/${pathPage.ai}/${chatBoxes.length + 2}`);
+                router.push(`${pathPage.ai}/${chatBoxes.length + 2}`);
+            }
         }
     };
 
@@ -82,6 +85,7 @@ const BottomBar = () => {
                     if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
                         handleSubmit(); // Call handleSubmit when Enter is pressed
+                        setValue(""); // Clear the input field after submission
                     }
                 }}
                 startContent={
@@ -97,6 +101,7 @@ const BottomBar = () => {
                         onClick={() => {
                             if (value && value !== "") {
                                 handleSubmit(); // Call handleSubmit when Enter is pressed
+                                setValue(""); // Clear the input field after submission
                             }
                         }}
                     >
