@@ -23,7 +23,7 @@ const ChatLayout = ({
             </aside>
 
             <section
-                className={`relative flex flex-1 max-h-screen flex-col sm:p-7 p-5 transition-all duration-500`}
+                className={`relative flex w-full h-full max-h-screen flex-col sm:p-7 p-5 transition-all duration-500`}
                 style={{
                     marginLeft: isOpenSidebar ? "260px" : "0",
                     // padding: "28px",
