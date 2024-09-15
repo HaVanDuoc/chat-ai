@@ -16,7 +16,7 @@ import { LuPencil, LuShare } from "react-icons/lu";
 import { RiArchive2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
 import { setChatBox } from "@/redux/features/chatbox/chatboxSlice";
-
+import { pathPage } from "@/config";
 
 const Sidebar = () => {
     const chats = useAppSelector((state: RootState) => state.chat.chatBoxes) // Get Box chats in redux
@@ -55,7 +55,7 @@ const Sidebar = () => {
                                 }
                                 content="Chat AI"
                                 endContent={<FiEdit size={16} />}
-                                link="/"
+                                link={pathPage.ai}
                             />
                             <ItemSidebar
                                 startContent={
@@ -65,7 +65,7 @@ const Sidebar = () => {
                                     />
                                 }
                                 content="Explore"
-                                link="/explore"
+                                link={pathPage.explore}
                             />
                         </div>
                     </section>
@@ -98,7 +98,7 @@ const Sidebar = () => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     }
-                                    link={`/c/${chat.chatId}`}
+                                    link={`${pathPage.ai}/${chat.chatId}`}
                                 />
                             ))}
                         </div>

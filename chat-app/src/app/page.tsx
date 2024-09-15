@@ -1,4 +1,4 @@
-import HomeSection from "@/components/ui/HomeSection";
+import HomeSection from "@/components/section/HomeSection";
 import React from "react";
 
 const HomePage = () => {

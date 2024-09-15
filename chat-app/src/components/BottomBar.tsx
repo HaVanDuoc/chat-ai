@@ -1,3 +1,6 @@
+"use client";
+
+import { pathPage } from "@/config";
 import { ChatBox, MessageProps } from "@/interfaces";
 import { addChatBox, addMessage } from "@/redux/features/chatbox/chatboxSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -54,7 +57,7 @@ const BottomBar = () => {
 
             dispatch(addChatBox(chat));
 
-            router.push(`/c/${chatBoxes.length + 2}`);
+            router.push(`/${pathPage.ai}/${chatBoxes.length + 2}`);
         }
     };
 
@@ -89,7 +92,14 @@ const BottomBar = () => {
                     </div>
                 }
                 endContent={
-                    <div className="w-10 h-10 flex justify-center items-center cursor-pointer opacity-70">
+                    <div
+                        className="w-10 h-10 flex justify-center items-center cursor-pointer opacity-70"
+                        onClick={() => {
+                            if (value && value !== "") {
+                                handleSubmit(); // Call handleSubmit when Enter is pressed
+                            }
+                        }}
+                    >
                         <Tooltip showArrow content="Send">
                             <FaLocationArrow size={22} />
                         </Tooltip>
