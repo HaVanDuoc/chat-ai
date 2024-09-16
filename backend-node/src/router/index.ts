@@ -1,9 +1,11 @@
 import { HttpStatusCode } from "axios"
 import { Response } from "express"
 import authRoute from "~/router/authRoute"
+import openaiRoute from "./openaiRoute"
 
 const router = (app: any) => {
     // app.use("/api/auth", authRoute)
+    app.use("/api/ai", openaiRoute)
 
     // app.use(Middlewares.isAuthenticated)
 

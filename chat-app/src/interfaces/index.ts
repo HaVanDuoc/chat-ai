@@ -7,15 +7,13 @@ export interface UserProps {
 }
 
 export interface MessageProps {
-    id: number;
-    sender: string;
-    message: string;
-    timestamp: string;
-    seen: boolean;
+    role: string,
+    content: string
+    refusal?: boolean
 }
 
-export interface ChatBox {
-    chatId: number;
+export interface ConversationProps {
+    conversationId: string;
     participants: string[],
     messages: MessageProps[];
 }

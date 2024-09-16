@@ -7,10 +7,10 @@ interface Props {
 }
 
 const Message: React.FC<Props> = ({ message }) => {
-    return message.sender === "User" ? (
+    return message.role === "user" ? (
         // Message of user
         <div className="md:w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto break-words whitespace-pre-wrap">
-            {message.message}
+            {message.content}
         </div>
     ) : (
         // Message of AI
@@ -19,7 +19,7 @@ const Message: React.FC<Props> = ({ message }) => {
                 <GiMagicHat size={24} className="opacity-80" />
             </div>
             <div className="flex flex-row gap-5 break-words whitespace-pre-wrap">
-                {message.message}
+                {message.content}
             </div>
         </div>
     );

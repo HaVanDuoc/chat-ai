@@ -8,7 +8,6 @@ import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 import { connectDatabase } from "~/utils"
-import path from "path"
 
 dotenv.config();
 
@@ -24,7 +23,8 @@ if (!MONGO_URI) {
 }
 
 const corsOptions = {
-    origin: [CLIENT, HOST],
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
     credentials: true,
 }
 

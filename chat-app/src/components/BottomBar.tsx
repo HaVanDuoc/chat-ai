@@ -1,65 +1,70 @@
 "use client";
 
-import { pathPage } from "@/config";
-import { ChatBox, MessageProps } from "@/interfaces";
-import { addChatBox, addMessage } from "@/redux/features/chatbox/chatboxSlice";
+import { api, pathPage } from "@/config";
+import { ConversationProps, MessageProps } from "@/interfaces";
+import {
+    addChat,
+    addChatBox,
+    addMessage,
+    selectChat,
+} from "@/redux/features/chatbox/chatboxSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import { Textarea, Tooltip } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 
 const BottomBar = () => {
+    // const [messages, setMessages] = useState<ConversationProps["messages"]>([]); // Save conversation when not logged
+    const [isLogged, setLogged] = useState(false);
     const [value, setValue] = useState<string>("");
-    const { id: chatId } = useParams();
+    const { id: conversationId } = useParams();
     const dispatch = useAppDispatch();
     const router = useRouter();
     const chatBoxes = useAppSelector(
         (state: RootState) => state.chat.chatBoxes,
     );
+    const chat = useAppSelector(selectChat); // chat with ai when no logged
 
-    const handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    console.log("chat", chat);
+
+    const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e && e.preventDefault(); // Prevent the default form submission behavior
 
         if (value && value !== "") {
             console.log("Message:", value);
 
-            if (chatId) {
-                const messageData: MessageProps = {
-                    id: 11,
-                    sender: "User",
-                    message: value,
-                    timestamp: new Date().toISOString(),
-                    seen: false,
-                };
+            const newMessage: MessageProps = {
+                role: "user",
+                content: value,
+            };
 
-                dispatch(
-                    addMessage({
-                        chatId: Number(chatId),
-                        message: messageData,
-                    }),
-                );
-            } else {
-                // Case create new chat
-                const chat: ChatBox = {
-                    chatId: chatBoxes.length + 2,
-                    participants: ["User", "AI Assistant"],
-                    messages: [
-                        {
-                            id: 1,
-                            sender: "User",
-                            message: value,
-                            timestamp: new Date().toISOString(),
-                            seen: false,
-                        },
-                    ],
-                };
+            if (!isLogged) {
+                // Chưa đăng nhập conversation sẽ được lưu vào store
+                try {
+                    console.log("[...chat, newMessage]", [...chat, newMessage]);
+                    dispatch(addChat({ message: newMessage })); // message newest of user
 
-                dispatch(addChatBox(chat));
+                    // Gửi request tới API để lưu cuộc hội thoại vào database
+                    const response = await api.post("/ai/completion", {
+                        messages: [...chat, newMessage],
+                    });
 
-                router.push(`${pathPage.ai}/${chatBoxes.length + 2}`);
+                    console.log("API Response:", response.data);
+
+                    if (response && !response.data.refusal) {
+                        // Cập nhật Redux store với tin nhắn phản hồi từ API
+                        dispatch(
+                            addChat({ message: response.data.reply.message }),
+                        ); // message newest of user
+                    } else {
+                        console.error("API is rejected");
+                    }
+                } catch (error) {
+                    console.error("API error:", error);
+                }
             }
         }
     };
@@ -90,9 +95,7 @@ const BottomBar = () => {
                 }}
                 startContent={
                     <div className="w-10 h-10 flex justify-center items-center cursor-pointer">
-                        <Tooltip showArrow content="Attach file">
-                            <MdAttachFile size={22} />
-                        </Tooltip>
+                        <MdAttachFile size={22} />
                     </div>
                 }
                 endContent={
@@ -105,9 +108,7 @@ const BottomBar = () => {
                             }
                         }}
                     >
-                        <Tooltip showArrow content="Send">
-                            <FaLocationArrow size={22} />
-                        </Tooltip>
+                        <FaLocationArrow size={22} />
                     </div>
                 }
             />
