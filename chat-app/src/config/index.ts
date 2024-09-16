@@ -9,7 +9,7 @@ export const pathPage = {
 }
 
 export const api = axios.create({
-    baseURL: `${process.env.host}/api`,
+    baseURL: `${process.env.HOST}/api`,
     timeout: 0,
     headers: {'X-Custom-Header': 'foobar'},
     withCredentials: true,
