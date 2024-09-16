@@ -1,34 +1,25 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { FiEdit } from "react-icons/fi";
-import ItemSidebar from "@/components/ItemSidebar";
+import { FiEdit, FiMoreHorizontal } from "react-icons/fi";
 import { GiMagicHat } from "react-icons/gi";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
-import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
-import ButtonNewChat from "@/components/ButtonNewChat";
-import { CHATS } from "@/dump";
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger,
-} from "@nextui-org/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { LuPencil, LuShare } from "react-icons/lu";
 import { RiArchive2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
-import { setChatBox } from "@/redux/features/chatbox/chatboxSlice";
+import { selectConversations, setChatBox } from "@/redux/features/chatbox/chatboxSlice";
 import { pathPage } from "@/config";
+import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
+import ButtonNewChat from "@/components/ButtonNewChat";
+import ItemSidebar from "@/components/ItemSidebar";
+import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
+import { CHATS } from "@/dump";
 
 const Sidebar = () => {
-    const chats = useAppSelector((state: RootState) => state.chat.chatBoxes); // Get Box chats in redux
-    const isOpenSidebar = useAppSelector(
-        (state: RootState) => state.sidebar.open,
-    ); // get status open of sidebar
+    const chats = useAppSelector(selectConversations); // Get Box chats in redux
+    const isOpenSidebar = useAppSelector(selectOpenSidebar); // get status open of sidebar
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -43,9 +34,7 @@ const Sidebar = () => {
                 opacity: isOpenSidebar ? "100" : 0,
             }}
         >
-            <nav
-                className={`flex flex-col gap-5 py-5 w-[260px] h-full max-h-screen bg-main `}
-            >
+            <nav className={`flex flex-col gap-5 py-5 w-[260px] h-full max-h-screen bg-main `}>
                 <section className="flex flex-row justify-between items-center px-3">
                     <ButtonToggleSidebar />
                     <ButtonNewChat />
@@ -55,23 +44,13 @@ const Sidebar = () => {
                     <section className="flex px-3">
                         <div className="flex flex-col w-full">
                             <ItemSidebar
-                                startContent={
-                                    <GiMagicHat
-                                        size={20}
-                                        className="opacity-70"
-                                    />
-                                }
+                                startContent={<GiMagicHat size={20} className="opacity-70" />}
                                 content="Chat AI"
                                 endContent={<FiEdit size={16} />}
                                 link={pathPage.ai}
                             />
                             <ItemSidebar
-                                startContent={
-                                    <RxDashboard
-                                        size={20}
-                                        className="opacity-70"
-                                    />
-                                }
+                                startContent={<RxDashboard size={20} className="opacity-70" />}
                                 content="Explore"
                                 link={pathPage.explore}
                             />
@@ -84,18 +63,16 @@ const Sidebar = () => {
                             {chats.map((chat, index) => (
                                 <ItemSidebar
                                     key={index}
-                                    content={chat.messages[0].message}
+                                    content={chat.messages[0].content}
                                     endContent={
                                         <Dropdown placement="right-start">
                                             <DropdownTrigger>
                                                 <Button
                                                     variant="light"
                                                     isIconOnly
-                                                    aria-label={`more-${chat.chatId}`}
+                                                    aria-label={`more-${chat.conversationId}`}
                                                 >
-                                                    <FiMoreHorizontal
-                                                        size={20}
-                                                    />
+                                                    <FiMoreHorizontal size={20} />
                                                 </Button>
                                             </DropdownTrigger>
                                             <DropdownMenu aria-label="Static Actions">
@@ -112,17 +89,13 @@ const Sidebar = () => {
                                                     Rename
                                                 </DropdownItem>
                                                 <DropdownItem
-                                                    startContent={
-                                                        <RiArchive2Line />
-                                                    }
+                                                    startContent={<RiArchive2Line />}
                                                     key="Archive"
                                                 >
                                                     Archive
                                                 </DropdownItem>
                                                 <DropdownItem
-                                                    startContent={
-                                                        <AiOutlineDelete />
-                                                    }
+                                                    startContent={<AiOutlineDelete />}
                                                     key="Delete"
                                                     className="text-danger"
                                                     color="danger"
@@ -132,7 +105,7 @@ const Sidebar = () => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     }
-                                    link={`${pathPage.ai}/${chat.chatId}`}
+                                    link={`${pathPage.ai}/${chat.conversationId}`}
                                 />
                             ))}
                         </div>

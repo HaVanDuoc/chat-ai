@@ -3,12 +3,12 @@ import { RootState } from '@/redux/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ChatState {
-    chatBoxes: ConversationProps[];
+    conversations: ConversationProps[];
     chatAi: MessageProps[] // Use save message when no logged
 }
 
 const initialState: ChatState = {
-    chatBoxes: [],
+    conversations: [],
     chatAi: []
 }
 export const chatBoxSlice = createSlice({
@@ -16,20 +16,20 @@ export const chatBoxSlice = createSlice({
     initialState,
     reducers: {
         setChatBox: (state, action: PayloadAction<ConversationProps[]>) => {
-            state.chatBoxes = action.payload
+            state.conversations = action.payload
         },
         addChatBox: (state, action: PayloadAction<ConversationProps>) => {
-            state.chatBoxes.push(action.payload)
+            state.conversations.push(action.payload)
         },
         addMessage: (
             state,
             action: PayloadAction<{ conversationId: string; message: MessageProps }>
         ) => {
             const { conversationId, message } = action.payload;
-            const index = state.chatBoxes.findIndex(box => box.conversationId === conversationId);
+            const index = state.conversations.findIndex(box => box.conversationId === conversationId);
 
             if (index >= 0) {
-                state.chatBoxes[index].messages?.push(message)
+                state.conversations[index].messages?.push(message)
             }
         },
         addChat: (
@@ -43,7 +43,7 @@ export const chatBoxSlice = createSlice({
 
 export const { setChatBox, addMessage, addChatBox, addChat } = chatBoxSlice.actions
 
-export const selectChatBoxes = (state: RootState) => state.chat.chatBoxes;
+export const selectConversations = (state: RootState) => state.chat.conversations;
 export const selectChat = (state: RootState) => state.chat.chatAi
 
 export default chatBoxSlice.reducer

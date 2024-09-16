@@ -2,7 +2,11 @@ import SignUpSection from "@/components/SignUpSection";
 import React from "react";
 
 const SignUpPage = () => {
-    return <SignUpSection />;
+    return (
+        <React.Fragment>
+            <SignUpSection />
+        </React.Fragment>
+    );
 };
 
 export default SignUpPage;

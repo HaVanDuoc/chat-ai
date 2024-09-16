@@ -8,7 +8,7 @@ const SignInSection = () => {
     return (
         <div className="flex w-full h-full max-w-screen p-5">
             <div className="flex flex-col gap-4 items-center mx-auto my-[150px] w-[350px]">
-                <div className="font-bold text-4xl mb-8">Wellcome</div>
+                <div className="font-bold text-4xl mb-8">Welcome</div>
                 <Input
                     placeholder="Email address*"
                     variant="bordered"

@@ -2,7 +2,11 @@ import SignInSection from "@/components/SignInSection";
 import React from "react";
 
 const SignInPage = () => {
-    return <SignInSection />;
+    return (
+        <React.Fragment>
+            <SignInSection />
+        </React.Fragment>
+    );
 };
 
 export default SignInPage;

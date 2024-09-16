@@ -2,18 +2,16 @@
 
 import Sidebar from "@/components/sidebar";
 import TopBar from "@/components/TopBar";
+import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
 import * as React from "react";
 
 export interface IExploreLayoutProps {
     children: React.ReactNode;
 }
 
-const ExploreLayout = (props: IExploreLayoutProps) => {
-    const isOpenSidebar = useAppSelector(
-        (state: RootState) => state.sidebar.open,
-    );
+const ExploreLayout = ({ children }: IExploreLayoutProps) => {
+    const isOpenSidebar = useAppSelector(selectOpenSidebar);
 
     return (
         <div className="relative flex flex-row h-screen max-h-screen text-[#0d0d0d] overflow-hidden">
@@ -22,14 +20,12 @@ const ExploreLayout = (props: IExploreLayoutProps) => {
             </aside>
 
             <section
-                className={`relative flex flex-1 flex-col transition-all duration-500`}
-                style={{
-                    marginLeft: isOpenSidebar ? "260px" : "0",
-                    padding: "28px",
-                }}
+                className={`relative flex flex-1 flex-col transition-all duration-500 p-7 ${
+                    isOpenSidebar ? "ml-[260px]" : "ml-0"
+                }`}
             >
                 <TopBar />
-                {props.children}
+                {children}
             </section>
         </div>
     );

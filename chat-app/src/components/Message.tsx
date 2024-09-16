@@ -3,11 +3,11 @@ import { marked } from "marked";
 import React from "react";
 import { GiMagicHat } from "react-icons/gi";
 
-interface Props {
+interface IMessage {
     message: MessageProps;
 }
 
-const Message: React.FC<Props> = ({ message }) => {
+const Message: React.FC<IMessage> = ({ message }) => {
     const markdown = marked(message.content);
 
     return message.role === "user" ? (

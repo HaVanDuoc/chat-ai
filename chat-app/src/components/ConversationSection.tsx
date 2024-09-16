@@ -4,34 +4,26 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Message from "./Message";
 import { useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
 import { GiMagicHat } from "react-icons/gi";
 import { IoMdImages } from "react-icons/io";
-import { selectChat } from "@/redux/features/chatbox/chatboxSlice";
+import { selectChat, selectConversations } from "@/redux/features/chatbox/chatboxSlice";
 import { ConversationProps } from "@/interfaces";
 
 const ConversationSection = () => {
-    const [conversation, setConversation] = useState<ConversationProps | null>(
-        null,
-    );
-
-    const isLogged = false
+    const [conversation, setConversation] = useState<ConversationProps | null>(null);
+    const isLogged = false;
 
     const { id: conversationId } = useParams();
     const chatRedux = useAppSelector(selectChat);
-    console.log("chatRedux", chatRedux);
+    const conversations = useAppSelector(selectConversations); // get chatBoxes in redux
 
-    const getChatBoxesRedux = useAppSelector(
-        (state: RootState) => state.chat.chatBoxes,
-    ); // get chatBoxes in redux
-    const chatBox = getChatBoxesRedux.filter(
-        (item) => item.conversationId === conversationId,
-    )[0]; // chat with id
+    const chatBox = conversations.filter((item) => item.conversationId === conversationId)[0]; // chat with id
+    console.log("chatBox", chatBox);
     const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         if (isLogged) {
-            setConversation(chatBox);
+            setConversation(chatBox ?? null);
         } else {
             setConversation({
                 conversationId: "default",
@@ -48,24 +40,14 @@ const ConversationSection = () => {
         }
     }, [conversation?.messages]);
 
-    return isLogged ? (
-        conversationId ? (
-            <WrapMessage
-                conversation={conversation}
-                messageEndRef={messageEndRef}
-            />
-        ) : (
-            <SuggestPrompt />
-        )
-    ) : conversation && conversation.messages.length > 0 ? (
-        <WrapMessage
-            conversation={conversation}
-            messageEndRef={messageEndRef}
-        />
+    return isLogged || (conversationId && conversation) ? (
+        <WrapMessage conversation={conversation} messageEndRef={messageEndRef} />
     ) : (
         <SuggestPrompt />
     );
 };
+
+ConversationSection.displayName = "ConversationSection";
 
 export default ConversationSection;
 
@@ -74,36 +56,23 @@ interface WrapMessageProps {
     messageEndRef: React.RefObject<HTMLDivElement>;
 }
 
-const WrapMessage: React.FC<WrapMessageProps> = ({
-    conversation,
-    messageEndRef,
-}) => {
+const WrapMessage: React.FC<WrapMessageProps> = React.memo(({ conversation, messageEndRef }) => {
     return (
-        <div className=" flex flex-1 flex-grow flex-col gap-10 w-full max-w-screen-md mx-auto">
-            {conversation &&
-                conversation.messages.length > 0 &&
-                conversation.messages.map((message, index) => {
-                    return (
-                        <div
-                            ref={
-                                index === conversation.messages.length - 1
-                                    ? messageEndRef
-                                    : null
-                            }
-                            className={` ${
-                                index === conversation.messages.length - 1
-                                    ? "flex pb-10"
-                                    : ""
-                            }`}
-                            key={index}
-                        >
-                            <Message message={message} />
-                        </div>
-                    );
-                })}
+        <div className="flex flex-1 flex-grow flex-col gap-10 w-full max-w-screen-md mx-auto">
+            {conversation?.messages.map((message, index) => (
+                <div
+                    ref={index === conversation.messages.length - 1 ? messageEndRef : null}
+                    className={` ${index === conversation.messages.length - 1 ? "flex pb-10" : ""}`}
+                    key={index}
+                >
+                    <Message message={message} />
+                </div>
+            ))}
         </div>
     );
-};
+});
+
+WrapMessage.displayName = "WrapMessage";
 
 const SuggestPrompt = () => {
     return (
@@ -120,10 +89,7 @@ const SuggestPrompt = () => {
                             key={idx}
                             className="flex flex-col border border-gray-300 shadow-sm hover:bg-main gap-3 p-5 rounded-xl cursor-pointer"
                         >
-                            <IoMdImages
-                                size={20}
-                                color={"rgb(118, 208, 235)"}
-                            />
+                            <IoMdImages size={20} color={"rgb(118, 208, 235)"} />
                             <div>Create an illustration for a bakery</div>
                         </div>
                     ))}
@@ -131,3 +97,5 @@ const SuggestPrompt = () => {
         </div>
     );
 };
+
+SuggestPrompt.displayName = "SuggestPrompt";
