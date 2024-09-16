@@ -14,7 +14,8 @@ const ConversationSection = () => {
     const [conversation, setConversation] = useState<ConversationProps | null>(
         null,
     );
-    const [isLogged, setLogged] = useState(false);
+
+    const isLogged = false
 
     const { id: conversationId } = useParams();
     const chatRedux = useAppSelector(selectChat);

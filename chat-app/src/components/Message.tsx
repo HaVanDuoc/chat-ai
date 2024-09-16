@@ -1,4 +1,5 @@
 import { MessageProps } from "@/interfaces";
+import { marked } from "marked";
 import React from "react";
 import { GiMagicHat } from "react-icons/gi";
 
@@ -7,10 +8,15 @@ interface Props {
 }
 
 const Message: React.FC<Props> = ({ message }) => {
+    const markdown = marked(message.content);
+
     return message.role === "user" ? (
         // Message of user
-        <div className="md:w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto break-words whitespace-pre-wrap">
-            {message.content}
+        <div className="md:w-fit max-w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto ">
+            <article
+                className="prose text-justify"
+                dangerouslySetInnerHTML={{ __html: markdown }}
+            />
         </div>
     ) : (
         // Message of AI
@@ -18,8 +24,11 @@ const Message: React.FC<Props> = ({ message }) => {
             <div className="flex justify-center items-center mt-1">
                 <GiMagicHat size={24} className="opacity-80" />
             </div>
-            <div className="flex flex-row gap-5 break-words whitespace-pre-wrap">
-                {message.content}
+            <div className="flex flex-row gap-5 w-fit ">
+                <article
+                    className="prose text-justify"
+                    dangerouslySetInnerHTML={{ __html: markdown }}
+                />
             </div>
         </div>
     );

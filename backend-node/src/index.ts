@@ -23,7 +23,7 @@ if (!MONGO_URI) {
 }
 
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: [CLIENT],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
 }
