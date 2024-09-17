@@ -3,36 +3,58 @@ import passport from "passport"
 import dotenv from "dotenv"
 // import "../config/passport.config"
 import { HttpStatusCode } from "axios"
+import { PrismaClient, User } from "@prisma/client"
+import { StatusCodes } from "http-status-codes"
 // import User from "../models/User"
 
 dotenv.config()
 
 const authRoute = Router()
+const prisma = new PrismaClient()
 const CLIENT_URL = `${process.env.CLIENT_URL}`
 
-// authRoute.get("/session", async (req: Request, res: Response) => {
-//     if (req.isAuthenticated() && req.session && req.session.cookie && req.session.cookie.expires) {
-//         const currentTime = new Date().getTime()
-//         const sessionExpirationTime = new Date(req.session.cookie.expires).getTime()
+authRoute.get("/session", async (req: Request, res: Response) => {
+    if (req.isAuthenticated() && req.session?.cookie?.expires) {
+        const currentTime = Date.now();
+        const sessionExpirationTime = new Date(req.session.cookie.expires).getTime();
 
-//         if (currentTime > sessionExpirationTime) {
-//             req.logout(() => {
-//                 res.status(HttpStatusCode.Unauthorized).json({
-//                     error: true,
-//                     message: "Session Expired",
-//                 })
-//             })
-//         } else {
-//             const auth_id = req.user
-//             const user = await User.findById(auth_id)
-//             if (user) {
-//                 res.status(HttpStatusCode.Ok).json({ user, message: "Login Successful" })
-//             }
-//         }
-//     } else {
-//         res.status(HttpStatusCode.Unauthorized).json({ error: true, message: "Unauthorized" })
-//     }
-// })
+        // Check if the session has expired
+        if (currentTime > sessionExpirationTime) {
+            req.logout((err) => {
+                if (err) {
+                    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                        error: true,
+                        message: "Error during logout",
+                    });
+                }
+                return res.status(StatusCodes.UNAUTHORIZED).json({
+                    error: true,
+                    message: "Session Expired",
+                });
+            });
+        } else {
+            // Use Prisma to fetch the user
+            const user_id = (req.user as User).id
+            const user = await prisma.user.findUnique({
+                where: { id: user_id }, 
+            });
+
+            if (user) {
+                return res.status(StatusCodes.OK).json({ user, message: "Login Successful" });
+            } else {
+                return res.status(StatusCodes.NOT_FOUND).json({
+                    error: true,
+                    message: "User not found",
+                });
+            }
+        }
+    } else {
+        return res.status(StatusCodes.UNAUTHORIZED).json({
+            error: true,
+            message: "Unauthorized",
+        });
+    }
+});
 
 authRoute.get("/login/google", passport.authenticate("google"))
 

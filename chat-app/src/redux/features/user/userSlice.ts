@@ -10,7 +10,7 @@ const initialState: UserState = {
     current: null
 }
 export const authSlice = createSlice({
-    name: 'auth',
+    name: 'user',
     initialState,
     reducers: {
         setCurrentUser: (state, action: PayloadAction<UserProps>) => {
@@ -22,7 +22,9 @@ export const authSlice = createSlice({
 
 export const { setCurrentUser } = authSlice.actions
 
-export const selectChatBoxes = (state: RootState) => state.chat.chatBoxes;
-export const selectChat = (state: RootState) => state.chat.chatAi
+export const selectLogged = (state: RootState): boolean => {
+    return !!state.user.current
+}
+export const selectCurrentUser = (state: RootState) => state.user.current
 
 export default authSlice.reducer

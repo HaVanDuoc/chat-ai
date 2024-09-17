@@ -14,33 +14,35 @@ const ConversationSection = () => {
     const isLogged = false;
 
     const { id: conversationId } = useParams();
-    const chatRedux = useAppSelector(selectChat);
+    const chatai = useAppSelector(selectChat);
     const conversations = useAppSelector(selectConversations); // get chatBoxes in redux
 
     const chatBox = conversations.filter((item) => item.conversationId === conversationId)[0]; // chat with id
     console.log("chatBox", chatBox);
     const messageEndRef = useRef<HTMLDivElement | null>(null);
 
+    console.log("chatai", chatai);
+
     useEffect(() => {
         if (isLogged) {
             setConversation(chatBox ?? null);
-        } else {
+        } else if (chatai.length > 0) {
             setConversation({
                 conversationId: "default",
                 participants: ["user", "assistant"],
-                messages: chatRedux,
+                messages: chatai,
             });
         }
-    }, [conversationId, chatBox, isLogged, chatRedux]);
+    }, [conversationId, chatBox, isLogged, chatai]);
 
     // Scroll xuống đáy sau khi tin nhắn được render
     useEffect(() => {
         if (conversation?.messages) {
             messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }
-    }, [conversation?.messages]);
+    }, [conversation?.messages])
 
-    return isLogged || (conversationId && conversation) ? (
+    return conversation ? (
         <WrapMessage conversation={conversation} messageEndRef={messageEndRef} />
     ) : (
         <SuggestPrompt />

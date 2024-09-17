@@ -3,17 +3,22 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React, { useEffect, useState } from "react";
 import ButtonToggleSidebar from "./ButtonToggleSidebar";
-import { Tooltip } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import { GiMagicHat } from "react-icons/gi";
 import UserAccount from "./UserAccount";
 import { onClose, onOpen, selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { pathPage } from "@/config";
+import { selectLogged } from "@/redux/features/user/userSlice";
+import { useRouter } from "next/navigation";
 
 const TopBar = () => {
     const [widthScreen, setWidthScreen] = useState<number | null>(null);
+    const isOpenSidebar = useAppSelector(selectOpenSidebar);
+    const isLogged = useAppSelector(selectLogged);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     // Check màn hình khi dưới 'md' và đóng sidebar
     useEffect(() => {
@@ -39,8 +44,6 @@ const TopBar = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, [dispatch, widthScreen]);
 
-    const isOpenSidebar = useAppSelector(selectOpenSidebar);
-
     return (
         <header className="flex flex-row justify-between items-center gap-5 w-full pb-5 sm:pb-7 z-10 sticky top-0 left-0 bg-white">
             <div className="flex flex-row gap-5 items-center justify-between md:justify-normal w-full md:w-auto">
@@ -61,11 +64,30 @@ const TopBar = () => {
                 )}
             </div>
 
-            {widthScreen && widthScreen > 768 && (
+            {widthScreen && widthScreen > 768 && isLogged && (
                 <GiMagicHat size={30} className="text-secondary" />
             )}
 
-            {widthScreen && widthScreen > 768 && <UserAccount />}
+            {isLogged ? (
+                widthScreen && widthScreen > 768 && <UserAccount />
+            ) : (
+                <div className="flex flex-row gap-5 items-center">
+                    <Button
+                        size="sm"
+                        className="rounded-full bg-black text-white"
+                        onClick={() => router.push(pathPage.signin)}
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        size="sm"
+                        className="rounded-full bg-black text-white"
+                        onClick={() => router.push(pathPage.signup)}
+                    >
+                        Sign Up
+                    </Button>
+                </div>
+            )}
         </header>
     );
 };

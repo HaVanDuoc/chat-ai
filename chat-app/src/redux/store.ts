@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import sidebarSlice from '@/redux/features/sidebar/sidebarSlice'
 import chatBoxSlice from '@/redux/features/chatbox/chatboxSlice'
+import userSlice from '@/redux/features/user/userSlice'
 
 export const store = configureStore({
     reducer: {
         sidebar: sidebarSlice,
         chat: chatBoxSlice,
+        user: userSlice,
     },
 })
 

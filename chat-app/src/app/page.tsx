@@ -1,4 +1,4 @@
-import HomeSection from "@/components/section/HomeSection";
+import HomeSection from "@/components/HomeSection";
 import React, { Fragment } from "react";
 
 const HomePage = () => {

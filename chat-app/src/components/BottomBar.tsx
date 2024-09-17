@@ -1,34 +1,22 @@
 "use client";
 
-import { api, pathPage } from "@/config";
-import { ConversationProps, MessageProps } from "@/interfaces";
-import {
-    addChat,
-    addChatBox,
-    addMessage,
-    selectChat,
-} from "@/redux/features/chatbox/chatboxSlice";
+import { api } from "@/config";
+import { MessageProps } from "@/interfaces";
+import { addChat, selectChat } from "@/redux/features/chatbox/chatboxSlice";
+import { selectLogged } from "@/redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
 import { Textarea } from "@nextui-org/react";
-import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 
 const BottomBar = () => {
-    // const [messages, setMessages] = useState<ConversationProps["messages"]>([]); // Save conversation when not logged
-    const [isLogged, setLogged] = useState(false);
     const [value, setValue] = useState<string>("");
-    const { id: conversationId } = useParams();
+    // const conversations = useAppSelector(selectConversations);
+    const chatai = useAppSelector(selectChat); // chat with ai when no logged
+    // const { id: conversationId } = useParams();
+    const isLogged = useAppSelector(selectLogged);
     const dispatch = useAppDispatch();
-    const router = useRouter();
-    const chatBoxes = useAppSelector(
-        (state: RootState) => state.chat.chatBoxes,
-    );
-    const chat = useAppSelector(selectChat); // chat with ai when no logged
-
-    console.log("chat", chat);
 
     const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e && e.preventDefault(); // Prevent the default form submission behavior
@@ -44,21 +32,18 @@ const BottomBar = () => {
             if (!isLogged) {
                 // Chưa đăng nhập conversation sẽ được lưu vào store
                 try {
-                    console.log("[...chat, newMessage]", [...chat, newMessage]);
                     dispatch(addChat({ message: newMessage })); // message newest of user
 
                     // Gửi request tới API để lưu cuộc hội thoại vào database
                     const response = await api.post("/ai/completion", {
-                        messages: [...chat, newMessage],
+                        messages: [...chatai, newMessage],
                     });
 
                     console.log("API Response:", response.data);
 
                     if (response && !response.data.refusal) {
                         // Cập nhật Redux store với tin nhắn phản hồi từ API
-                        dispatch(
-                            addChat({ message: response.data.reply.message }),
-                        ); // message newest of user
+                        dispatch(addChat({ message: response.data.reply.message })); // message newest of user
                     } else {
                         console.error("API is rejected");
                     }
