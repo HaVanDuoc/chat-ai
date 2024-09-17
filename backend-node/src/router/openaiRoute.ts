@@ -6,8 +6,6 @@ dotenv.config()
 
 const openaiRoute = Router()
 
-console.log('process.env.OPENAI_API_KEY', process.env.OPENAI_API_KEY)
-
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 openaiRoute.post("/completion", async (req: Request, res: Response) => {

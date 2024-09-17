@@ -1,16 +1,16 @@
-import { HttpStatusCode } from "axios"
-import { Response } from "express"
+import { NextFunction, Response, Request } from "express"
 import authRoute from "~/router/authRoute"
 import openaiRoute from "./openaiRoute"
+import { StatusCodes } from "http-status-codes"
+import { PrismaClient, User } from "@prisma/client"
 
 const router = (app: any) => {
     app.use("/api/auth", authRoute)
     app.use("/api/ai", openaiRoute)
 
-    // app.use(Middlewares.isAuthenticated)
 
     return app.use((req: Request, res: Response) => {
-        return res.status(HttpStatusCode.NotFound).json({ error: true, message: "NOT FOUND" })
+        return res.status(StatusCodes.NOT_FOUND).json({ error: true, message: "NOT FOUND" })
     })
 }
 

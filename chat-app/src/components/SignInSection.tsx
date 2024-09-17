@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
-import { FcGoogle } from "react-icons/fc";
 import { FaArrowLeft } from "react-icons/fa";
 import { pathPage } from "@/config";
 import { useRouter } from "next/navigation";
+import ButtonContinueGoogle from "@/components/ButtonContinueGoogle";
 
 const SignInSection = () => {
     const router = useRouter();
@@ -45,14 +45,7 @@ const SignInSection = () => {
                     </div>
 
                     <div className="flex flex-col gap-3 w-full">
-                        <Button
-                            variant="bordered"
-                            size="lg"
-                            startContent={<FcGoogle size={24} />}
-                            className="w-full bg-white hover:bg-gray-200"
-                        >
-                            Continue with Google
-                        </Button>
+                        <ButtonContinueGoogle />
                     </div>
                 </div>
             </div>

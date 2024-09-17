@@ -12,7 +12,7 @@ const development = {
     port: _.toNumber(process.env.PORT),
     serverHost: process.env.SERVER_HOST,
     clientHost: process.env.CLIENT_HOST || "*",
-    mongoUri: process.env.MONGO_URI || "*",
+    mongoUri: process.env.DATABASE_URL || "*",
     name: "development",
 }
 
@@ -23,7 +23,7 @@ const production = {
     port: _.toNumber(process.env.PORT_PROD),
     serverHost: process.env.SERVER_HOST_PROD,
     clientHost: process.env.CLIENT_HOST_PROD || "*",
-    mongoUri: process.env.MONGO_URI || "*",
+    mongoUri: process.env.DATABASE_URL || "*",
     name: "production",
 }
 

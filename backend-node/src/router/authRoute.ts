@@ -1,19 +1,20 @@
 import { Request, Response, Router } from "express"
 import passport from "passport"
 import dotenv from "dotenv"
-// import "../config/passport.config"
 import { HttpStatusCode } from "axios"
-import { PrismaClient, User } from "@prisma/client"
+import { PrismaClient } from "@prisma/client"
 import { StatusCodes } from "http-status-codes"
-// import User from "../models/User"
+import "~/config/passport"
 
 dotenv.config()
 
 const authRoute = Router()
 const prisma = new PrismaClient()
-const CLIENT_URL = `${process.env.CLIENT_URL}`
+const CLIENT = process.env.CLIENT || "http://localhost:3000"
 
-authRoute.get("/session", async (req: Request, res: Response) => {
+authRoute.get("/session", async (req: Request & { user?: { id?: any } }, res: Response) => {
+    console.log("res.session", req.session)
+     
     if (req.isAuthenticated() && req.session?.cookie?.expires) {
         const currentTime = Date.now();
         const sessionExpirationTime = new Date(req.session.cookie.expires).getTime();
@@ -34,9 +35,9 @@ authRoute.get("/session", async (req: Request, res: Response) => {
             });
         } else {
             // Use Prisma to fetch the user
-            const user_id = (req.user as User).id
+            const user_id = req.user?.id
             const user = await prisma.user.findUnique({
-                where: { id: user_id }, 
+                where: { id: user_id },
             });
 
             if (user) {
@@ -64,7 +65,7 @@ authRoute.get(
         failureRedirect: "/api/auth/login/failed",
     }),
     (req: Request, res: Response) => {
-        res.redirect(CLIENT_URL)
+        res.redirect(CLIENT)
     },
 )
 

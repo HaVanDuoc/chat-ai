@@ -15,10 +15,10 @@ const CLIENT = process.env.CLIENT || "*"
 const PORT = process.env.PORT || 5000
 const HOST = process.env.HOST || "http://localhost"
 const SECRET_KEY = process.env.SECRET_KEY || "*"
-const MONGO_URI = process.env.MONGO_URI
+const DATABASE_URL = process.env.DATABASE_URL
 
-if (!MONGO_URI) {
-    console.error("MONGO_URI is not defined in the environment variables!")
+if (!DATABASE_URL) {
+    console.error("DATABASE_URL is not defined in the environment variables!")
     process.exit(1)
 }
 
@@ -42,7 +42,7 @@ app.use(
         saveUninitialized: true,
         cookie: { maxAge: 4 * 60 * 60 * 1000 }, // 4 hour
         store: new MongoStore({
-            mongoUrl: MONGO_URI,
+            mongoUrl: DATABASE_URL,
         }),
     }),
 )
