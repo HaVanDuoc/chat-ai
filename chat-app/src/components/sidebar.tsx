@@ -15,7 +15,7 @@ import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
 import ButtonNewChat from "@/components/ButtonNewChat";
 import ItemSidebar from "@/components/ItemSidebar";
 import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
-import { CHATS } from "@/dump";
+import { CHATS } from "@/data";
 
 const Sidebar = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux

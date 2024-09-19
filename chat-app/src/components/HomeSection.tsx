@@ -17,9 +17,10 @@ export default function HomeSection() {
             const status = error.response?.status;
             if (status === 401) {
                 toast.error("Phiên đã hết hạn. Vui lòng đăng nhập lại.");
-                router.push("/signin");
+                router.push("/ai");
             } else {
                 toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+                router.push("/ai");
                 console.error("Axios Error:", error);
             }
         } else {
