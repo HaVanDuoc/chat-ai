@@ -1,6 +1,6 @@
 "use client";
 
-import Sidebar from "@/components/sidebar";
+import Sidebar from "@/components/layout/sidebar";
 import TopBar from "@/components/TopBar";
 import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { useAppSelector } from "@/redux/hooks";

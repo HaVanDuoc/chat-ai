@@ -17,7 +17,7 @@ import ItemSidebar from "@/components/ItemSidebar";
 import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { CHATS } from "@/data";
 
-const Sidebar = () => {
+const SiderSection = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux
     const isOpenSidebar = useAppSelector(selectOpenSidebar); // get status open of sidebar
     const dispatch = useAppDispatch();
@@ -116,4 +116,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default SiderSection;

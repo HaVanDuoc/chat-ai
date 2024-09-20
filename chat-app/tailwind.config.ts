@@ -9,6 +9,28 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+      },
+      screens: {
+        xs: "425px", // Extra small devices (portrait phones)
+        sm: "640px", // Small devices (landscape phones)
+        md: "768px", // Tablets (portrait)
+        lg: "1024px", // Tablets (landscape) and small desktops
+        xl: "1280px", // Medium desktops
+        "2xl": "1300px", // Large desktops
+      },
+    },
+    screens: {
+      xs: "425px", // Extra small devices (portrait phones)
+      sm: "640px", // Small devices (landscape phones)
+      md: "768px", // Tablets (portrait)
+      lg: "1024px", // Tablets (landscape) and small desktops
+      xl: "1280px", // Medium desktops
+      "2xl": "1300px", // Large desktops
+    },
     extend: {
       colors: {
         main: "#f9f9f9",

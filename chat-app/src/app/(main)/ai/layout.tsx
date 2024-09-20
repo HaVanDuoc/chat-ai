@@ -1,12 +1,12 @@
 "use client";
 
 import BottomBar from "@/components/BottomBar";
-import Sidebar from "@/components/sidebar";
 import TopBar from "@/components/TopBar";
 import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { selectLogged } from "@/redux/features/user/userSlice";
 import { useAppSelector } from "@/redux/hooks";
 import React from "react";
+import { Sidebar } from '@/components/sidebar';
 
 const ChatLayout = ({ children }: { children: React.ReactNode }) => {
     const isOpenSidebar = useAppSelector(selectOpenSidebar);

@@ -81,7 +81,7 @@ authRoute.get("/logout", (req: Request, res: Response) => {
         try {
             res.status(HttpStatusCode.Ok).json({ message: "Logout successful" })
         } catch (error) {
-            res.status(HttpStatusCode.Ok).json({ error: error, message: "Logout Failed" })
+            res.status(HttpStatusCode.BadRequest).json({ error: error, message: "Logout Failed" })
         }
     })
 })

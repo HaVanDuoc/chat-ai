@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import notify from "@/utils/notify";
 
 export default function HomeSection() {
     const router = useRouter();
@@ -16,15 +16,15 @@ export default function HomeSection() {
         if (error instanceof AxiosError) {
             const status = error.response?.status;
             if (status === 401) {
-                toast.error("Phiên đã hết hạn. Vui lòng đăng nhập lại.");
+                notify.error("Phiên đã hết hạn. Vui lòng đăng nhập lại.");
                 router.push("/ai");
             } else {
-                toast.error("Đã xảy ra lỗi. Vui lòng thử lại.");
+                notify.error("Đã xảy ra lỗi. Vui lòng thử lại.");
                 router.push("/ai");
                 console.error("Axios Error:", error);
             }
         } else {
-            toast.error("Đã xảy ra lỗi không xác định.");
+            notify.error("Đã xảy ra lỗi không xác định.");
             console.error("Unknown Error:", error);
         }
     };
@@ -33,7 +33,7 @@ export default function HomeSection() {
         try {
             const response = await api.get("/auth/session");
             dispatch(setCurrentUser(response.data.user)); // Cập nhật store với thông tin người dùng
-            toast.success("Đăng nhập thành công!");
+            notify.success("Đăng nhập thành công!");
             router.push("/ai");
         } catch (error) {
             handleError(error);
