@@ -1,4 +1,4 @@
-import { pathPage } from "@/config";
+import appConfig from "@/config/appConfig";
 import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
@@ -20,7 +20,7 @@ const SignUpSection = () => {
 
                 <div className="flex flex-row items-center gap-1">
                     <div>Already have an account?</div>
-                    <Link href={pathPage.signin} className="text-primary">
+                    <Link href={appConfig.path.signin} className="text-primary">
                         Login
                     </Link>
                 </div>

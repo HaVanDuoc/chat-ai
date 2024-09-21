@@ -1,4 +1,4 @@
-import { MessageProps } from "@/interfaces";
+import { MessageProps } from "@/models";
 import { marked } from "marked";
 import React from "react";
 import { GiMagicHat } from "react-icons/gi";

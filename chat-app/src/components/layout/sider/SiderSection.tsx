@@ -9,7 +9,6 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@
 import { LuPencil, LuShare } from "react-icons/lu";
 import { RiArchive2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
-import { pathPage } from "@/config";
 import ButtonToggleSidebar from "@/components/layout/sider/ButtonToggleSidebar";
 import ButtonNewChat from "@/components/common/ButtonNewChat";
 import ItemSidebar from "@/components/layout/sider/ItemSidebar";
@@ -19,6 +18,7 @@ import {
     selectConversations,
     setConversations,
 } from "@/redux/features/conversation/conversationSlice";
+import appConfig from "@/config/appConfig";
 
 const SiderSection = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux
@@ -50,12 +50,12 @@ const SiderSection = () => {
                                 startContent={<GiMagicHat size={20} className="opacity-70" />}
                                 content="Chat AI"
                                 endContent={<FiEdit size={16} />}
-                                link={pathPage.ai}
+                                link={appConfig.path.ai}
                             />
                             <ItemSidebar
                                 startContent={<RxDashboard size={20} className="opacity-70" />}
                                 content="Explore"
-                                link={pathPage.explore}
+                                link={appConfig.path.explore}
                             />
                         </div>
                     </section>
@@ -108,7 +108,7 @@ const SiderSection = () => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     }
-                                    link={`${pathPage.ai}/${chat.conversationId}`}
+                                    link={`${appConfig.path.ai}/${chat.conversationId}`}
                                 />
                             ))}
                         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import ContentConversation from "@/components/layout/conversation/ContentConversation";
-import { ConversationProps } from "@/interfaces";
+import { ConversationProps } from "@/models";
 import {
     clearConversation,
     selectConversations,

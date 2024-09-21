@@ -4,9 +4,9 @@ import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { pathPage } from "@/config";
 import { useRouter } from "next/navigation";
 import ButtonContinueGoogle from "@/components/signin/ButtonContinueGoogle";
+import appConfig from "@/config/appConfig";
 
 const SignInSection = () => {
     const router = useRouter();
@@ -19,7 +19,7 @@ const SignInSection = () => {
                     size="md"
                     startContent={<FaArrowLeft />}
                     className="mb-10"
-                    onClick={() => router.push(pathPage.home)}
+                    onClick={() => router.push(appConfig.path.home)}
                 >
                     Home
                 </Button>
@@ -33,7 +33,7 @@ const SignInSection = () => {
 
                     <div className="flex flex-row items-center gap-1">
                         <div>{`Don't have an account?`}</div>
-                        <Link href={pathPage.signup} className="text-primary">
+                        <Link href={appConfig.path.signup} className="text-primary">
                             Sign Up
                         </Link>
                     </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { api } from "@/config";
-import { MessageProps } from "@/interfaces";
+import api from "@/config/api";
+import { MessageProps } from "@/models";
 import {
     addMessage,
     selectConversations,

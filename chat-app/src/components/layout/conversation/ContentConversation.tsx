@@ -1,9 +1,9 @@
 "use client";
 
 import Message from "@/components/layout/conversation/Message";
-import { ConversationProps } from "@/interfaces";
 import React, { useEffect } from "react";
 import SuggestConversation from "./SuggestConversation";
+import { ConversationProps } from "@/models";
 
 const ContentConversation = ({ messages }: { messages: ConversationProps["messages"] }) => {
     const messageEndRef = React.useRef<HTMLDivElement | null>(null);

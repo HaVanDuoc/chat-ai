@@ -1,4 +1,4 @@
-import { ConversationProps, MessageProps } from '@/interfaces'
+import { ConversationProps, MessageProps } from '@/models';
 import { RootState } from '@/redux/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 

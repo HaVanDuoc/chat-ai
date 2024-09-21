@@ -1,4 +1,4 @@
-import { api } from "@/config";
+import api from "@/config/api";
 import notify from "@/utils/notify";
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { useRouter } from "next/navigation";

@@ -6,11 +6,11 @@ import { Button, Tooltip } from "@nextui-org/react";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import { onClose, onOpen, selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
-import { pathPage } from "@/config";
 import { selectLogged } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import ButtonToggleSidebar from "@/components/layout/sider/ButtonToggleSidebar";
 import OptionAccount from "@/components/layout/header/OptionAccount";
+import appConfig from "@/config/appConfig";
 
 const HeaderWrapper = ({ children }: { children?: React.ReactNode }) => {
     const [widthScreen, setWidthScreen] = useState<number | null>(null);
@@ -51,7 +51,7 @@ const HeaderWrapper = ({ children }: { children?: React.ReactNode }) => {
                 {!isOpenSidebar && isLogged && (
                     <Tooltip showArrow={true} content="New Chat">
                         <Link
-                            href={pathPage.ai}
+                            href={appConfig.path.ai}
                             className="flex justify-center items-center p-[10px] rounded-lg hover:bg-hover"
                         >
                             <FiEdit
@@ -72,14 +72,14 @@ const HeaderWrapper = ({ children }: { children?: React.ReactNode }) => {
                     <Button
                         size="sm"
                         className="rounded-full bg-black text-white"
-                        onClick={() => router.push(pathPage.signin)}
+                        onClick={() => router.push(appConfig.path.signin)}
                     >
                         Login
                     </Button>
                     <Button
                         size="sm"
                         className="rounded-full bg-black text-white"
-                        onClick={() => router.push(pathPage.signup)}
+                        onClick={() => router.push(appConfig.path.signup)}
                     >
                         Sign Up
                     </Button>

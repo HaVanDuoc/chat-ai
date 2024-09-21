@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
 import React from "react";
+import { Button, Input } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import Link from "next/link";
