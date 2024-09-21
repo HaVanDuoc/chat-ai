@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import notify from "@/utils/notify";
 
-export default function HomeSection() {
+export default function AppSection() {
     const router = useRouter();
     const dispatch = useAppDispatch();
 

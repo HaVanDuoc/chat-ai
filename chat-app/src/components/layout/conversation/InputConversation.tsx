@@ -2,7 +2,10 @@
 
 import { api } from "@/config";
 import { MessageProps } from "@/interfaces";
-import { addChat, selectChat } from "@/redux/features/chatbox/chatboxSlice";
+import {
+    addMessage,
+    selectConversations,
+} from "@/redux/features/conversation/conversationSlice";
 import { selectLogged } from "@/redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Textarea } from "@nextui-org/react";
@@ -10,10 +13,10 @@ import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 
-const BottomBar = () => {
+const InputConversation = () => {
     const [value, setValue] = useState<string>("");
-    // const conversations = useAppSelector(selectConversations);
-    const chatai = useAppSelector(selectChat); // chat with ai when no logged
+    const conversation = useAppSelector(selectConversations)[0];
+    // const chatai = useAppSelector(selectChat); // chat with ai when no logged
     // const { id: conversationId } = useParams();
     const isLogged = useAppSelector(selectLogged);
     const dispatch = useAppDispatch();
@@ -32,18 +35,23 @@ const BottomBar = () => {
             if (!isLogged) {
                 // Chưa đăng nhập conversation sẽ được lưu vào store
                 try {
-                    dispatch(addChat({ message: newMessage })); // message newest of user
+                    dispatch(addMessage({ conversationId: "0", message: newMessage })); // message newest of user
 
                     // Gửi request tới API để lưu cuộc hội thoại vào database
                     const response = await api.post("/ai/completion", {
-                        messages: [...chatai, newMessage],
+                        messages: [...conversation.messages, newMessage],
                     });
 
                     console.log("API Response:", response.data);
 
                     if (response && !response.data.refusal) {
                         // Cập nhật Redux store với tin nhắn phản hồi từ API
-                        dispatch(addChat({ message: response.data.reply.message })); // message newest of user
+                        dispatch(
+                            addMessage({
+                                conversationId: "0",
+                                message: response.data.reply.message,
+                            }),
+                        ); // message newest of user
                     } else {
                         console.error("API is rejected");
                     }
@@ -101,4 +109,4 @@ const BottomBar = () => {
     );
 };
 
-export default BottomBar;
+export default InputConversation;

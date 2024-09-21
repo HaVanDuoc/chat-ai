@@ -9,13 +9,16 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@
 import { LuPencil, LuShare } from "react-icons/lu";
 import { RiArchive2Line } from "react-icons/ri";
 import { AiOutlineDelete } from "react-icons/ai";
-import { selectConversations, setChatBox } from "@/redux/features/chatbox/chatboxSlice";
 import { pathPage } from "@/config";
-import ButtonToggleSidebar from "@/components/ButtonToggleSidebar";
-import ButtonNewChat from "@/components/ButtonNewChat";
-import ItemSidebar from "@/components/ItemSidebar";
+import ButtonToggleSidebar from "@/components/layout/sider/ButtonToggleSidebar";
+import ButtonNewChat from "@/components/common/ButtonNewChat";
+import ItemSidebar from "@/components/layout/sider/ItemSidebar";
 import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
 import { CHATS } from "@/data";
+import {
+    selectConversations,
+    setConversations,
+} from "@/redux/features/conversation/conversationSlice";
 
 const SiderSection = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux
@@ -23,7 +26,7 @@ const SiderSection = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(setChatBox(CHATS));
+        dispatch(setConversations(CHATS));
     }, [dispatch]);
 
     return (
@@ -63,7 +66,7 @@ const SiderSection = () => {
                             {chats.map((chat, index) => (
                                 <ItemSidebar
                                     key={index}
-                                    content={chat.messages[0].content}
+                                    content={chat.messages[0]?.content}
                                     endContent={
                                         <Dropdown placement="right-start">
                                             <DropdownTrigger>

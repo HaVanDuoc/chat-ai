@@ -6,7 +6,7 @@ import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { pathPage } from "@/config";
 import { useRouter } from "next/navigation";
-import ButtonContinueGoogle from "@/components/ButtonContinueGoogle";
+import ButtonContinueGoogle from "@/components/signin/ButtonContinueGoogle";
 
 const SignInSection = () => {
     const router = useRouter();

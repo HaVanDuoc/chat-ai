@@ -1,9 +1,13 @@
-import React from 'react'
+import HeaderExplore from "@/components/layout/header/HeaderExplore";
+import React from "react";
 
 const ExplorePage = () => {
-  return (
-    <div>ExplorePage</div>
-  )
-}
+    return (
+        <>
+            <HeaderExplore />
+            ExplorePage
+        </>
+    );
+};
 
-export default ExplorePage
+export default ExplorePage;

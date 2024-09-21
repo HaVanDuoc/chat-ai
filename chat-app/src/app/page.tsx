@@ -1,12 +1,12 @@
-import HomeSection from "@/components/HomeSection";
+import AppSection from "@/components/AppSection";
 import React, { Fragment } from "react";
 
-const HomePage = () => {
+const page = () => {
     return (
         <Fragment>
-            <HomeSection />
+            <AppSection />
         </Fragment>
     );
 };
 
-export default HomePage;
+export default page;
