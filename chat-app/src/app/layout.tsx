@@ -1,5 +1,5 @@
 import React from "react";
-import "@/styles/globals.css";
+import "@/app/globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { ReduxProvider } from "@/redux/provider";
 import { ToastContainer } from "react-toastify";

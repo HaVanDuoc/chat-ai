@@ -19,13 +19,8 @@ export default function AppSection() {
                 notify.error("Phiên đã hết hạn. Vui lòng đăng nhập lại.");
                 router.push("/ai");
             } else {
-                notify.error("Đã xảy ra lỗi. Vui lòng thử lại.");
                 router.push("/ai");
-                console.error("Axios Error:", error);
             }
-        } else {
-            notify.error("Đã xảy ra lỗi không xác định.");
-            console.error("Unknown Error:", error);
         }
     };
 
