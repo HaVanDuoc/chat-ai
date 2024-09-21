@@ -3,7 +3,7 @@ import { IoMdImages } from "react-icons/io";
 
 const SuggestConversation = () => {
     return (
-        <div className="flex flex-1 flex-grow flex-col gap-10 w-full max-w-screen-md mx-auto">
+        <div className="flex flex-1 flex-grow flex-col gap-10 w-full max-w-screen-md mx-auto py-10">
             <div className="flex justify-center items-center h-[180px]">
                 <GiMagicHat size={100} className="opacity-60" />
             </div>
