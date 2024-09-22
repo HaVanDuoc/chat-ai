@@ -52,5 +52,8 @@ export const conversationSlice = createSlice({
 export const { setConversations, addConversation, clearConversation, addMessage } = conversationSlice.actions
 
 export const selectConversations = (state: RootState) => state.conversation.conversations;
+export const selectConversationById = (state: RootState, conversationId: string) =>
+    state.conversation.conversations.find(conversation => conversation.conversationId === conversationId);
+
 
 export default conversationSlice.reducer

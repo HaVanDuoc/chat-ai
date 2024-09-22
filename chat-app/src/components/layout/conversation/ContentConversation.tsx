@@ -1,19 +1,31 @@
 "use client";
 
 import Message from "@/components/layout/conversation/Message";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SuggestConversation from "./SuggestConversation";
 import { ConversationProps } from "@/models";
+import { useParams } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
+import { selectConversationById } from "@/redux/features";
+import { RootState } from "@/redux/store";
 
-const ContentConversation = ({ messages }: { messages: ConversationProps["messages"] }) => {
+const ContentConversation = () => {
+    const [messages, setMessages] = useState<ConversationProps["messages"]>([]);
     const messageEndRef = React.useRef<HTMLDivElement | null>(null);
+    const { slug: conversationId } = useParams();
+    const conversation = useAppSelector((state: RootState) =>
+        selectConversationById(state, conversationId as string),
+    );
 
-    // Scroll xuống đáy sau khi tin nhắn được render
     useEffect(() => {
-        if (messages) {
+        setMessages(conversation?.messages || []);
+
+        if (messages.length > 0) {
+            // Scroll xuống đáy sau khi tin nhắn được render
             messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }
-    }, [messages]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [conversation]);
 
     return (
         <main className="flex flex-1 overflow-auto scroll-smooth">

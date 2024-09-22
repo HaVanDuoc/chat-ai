@@ -1,22 +1,16 @@
 "use client";
 
 import ContentConversation from "@/components/layout/conversation/ContentConversation";
-import { ConversationProps } from "@/models";
-import { clearConversation, selectConversations } from "@/redux/features";
-
+import InputConversation from "@/components/layout/conversation/InputConversation";
+import { clearConversation, selectLogged } from "@/redux/features";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 export default function AiPage() {
-    const [messages, setMessages] = useState<ConversationProps["messages"]>([]);
-    const conversations = useAppSelector(selectConversations);
+    const isLogged = useAppSelector(selectLogged);
+    const { slug: conversationId } = useParams();
     const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        setMessages(conversations[0].messages);
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [conversations[0]]);
 
     useEffect(() => {
         // Clear data when redirect conversation others
@@ -27,7 +21,16 @@ export default function AiPage() {
 
     return (
         <>
-            <ContentConversation messages={messages} />
+            <ContentConversation />
+
+            {isLogged ? (
+                <InputConversation
+                    conversationId={conversationId ? (conversationId as string) : undefined}
+                />
+            ) : (
+                // Chưa đăng nhập, thì khi send message lưu vào store - conversation default with id = "0"
+                <InputConversation conversationId={"0"} />
+            )}
         </>
     );
 }

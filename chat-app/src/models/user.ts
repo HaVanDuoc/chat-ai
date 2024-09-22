@@ -3,5 +3,6 @@ export interface UserProps {
     name: string;
     email: string;
     avatarUrl?: string;
+    image?: string;
     isActive: boolean;
 }

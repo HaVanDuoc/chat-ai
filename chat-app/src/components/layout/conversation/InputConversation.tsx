@@ -1,23 +1,26 @@
 "use client";
 
 import api from "@/config/api";
-import { MessageProps } from "@/models";
-import { addMessage, selectConversations } from "@/redux/features";
-
-import { selectLogged } from "@/redux/features/userSlice";
+import appConfig from "@/config/appConfig";
+import { ConversationProps, MessageProps } from "@/models";
+import { addConversation, addMessage, selectConversations } from "@/redux/features";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Textarea } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaLocationArrow } from "react-icons/fa";
 import { MdAttachFile } from "react-icons/md";
 
-const InputConversation = () => {
+const InputConversation = ({
+    conversationId,
+}: {
+    conversationId?: ConversationProps["conversationId"];
+}) => {
     const [value, setValue] = useState<string>("");
     const conversation = useAppSelector(selectConversations)[0];
-    // const chatai = useAppSelector(selectChat); // chat with ai when no logged
-    // const { id: conversationId } = useParams();
-    const isLogged = useAppSelector(selectLogged);
+    const newConversationId = Number(useAppSelector(selectConversations).length) + 2; // fake id new conversation
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e && e.preventDefault(); // Prevent the default form submission behavior
@@ -30,32 +33,51 @@ const InputConversation = () => {
                 content: value,
             };
 
-            if (!isLogged) {
-                // Chưa đăng nhập conversation sẽ được lưu vào store
-                try {
-                    dispatch(addMessage({ conversationId: "0", message: newMessage })); // message newest of user
+            // Trước hết nếu chưa có conversation thì tạo mới một cái
+            if (!conversationId) {
+                // fake fetch api new conversation
+                const resConversation: ConversationProps = {
+                    conversationId: newConversationId.toString(),
+                    participants: ["user1", "assistant"],
+                    messages: [],
+                };
 
-                    // Gửi request tới API để lưu cuộc hội thoại vào database
-                    const response = await api.post("/ai/completion", {
-                        messages: [...conversation.messages, newMessage],
-                    });
+                dispatch(addConversation(resConversation));
+                conversationId = resConversation.conversationId;
+                router.push(`${appConfig.path.ai}/${newConversationId}`);
+            }
 
-                    console.log("API Response:", response.data);
+            try {
+                dispatch(
+                    addMessage({
+                        conversationId,
+                        message: {
+                            role: "user",
+                            content: value,
+                        },
+                    }),
+                ); // message newest of user
 
-                    if (response && !response.data.refusal) {
-                        // Cập nhật Redux store với tin nhắn phản hồi từ API
-                        dispatch(
-                            addMessage({
-                                conversationId: "0",
-                                message: response.data.reply.message,
-                            }),
-                        ); // message newest of user
-                    } else {
-                        console.error("API is rejected");
-                    }
-                } catch (error) {
-                    console.error("API error:", error);
+                // Gửi request tới API để lưu cuộc hội thoại vào database
+                const response = await api.post("/ai/completion", {
+                    messages: [...conversation.messages, newMessage],
+                });
+
+                console.log("API Response:", response.data);
+
+                if (response && !response.data.refusal) {
+                    // Cập nhật Redux store với tin nhắn phản hồi từ API
+                    dispatch(
+                        addMessage({
+                            conversationId,
+                            message: response.data.reply.message,
+                        }),
+                    ); // message newest of user
+                } else {
+                    console.error("API is rejected");
                 }
+            } catch (error) {
+                console.error("API error:", error);
             }
         }
     };

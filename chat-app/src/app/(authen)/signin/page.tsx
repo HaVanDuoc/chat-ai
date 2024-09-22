@@ -3,11 +3,14 @@
 import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {} from "@/config/authConfig";
+import { signIn } from "next-auth/react";
+import appConfig from "@/config/appConfig";
 
 const schema = z.object({
     email: z.string().email("*Invalid email address").nonempty("*Email is required"),
@@ -34,18 +37,6 @@ const SignInPage = () => {
         reset();
     };
 
-    // Handle login with google
-    const handleLogin = async () => {
-        try {
-            const currentUrl = window.location.href;
-            const HOST = process.env.HOST;
-            const encodedParam = encodeURI(`?redirectUrl=${currentUrl}`);
-            window.open(`${HOST}/api/auth/login/google${encodedParam}`, "_self");
-        } catch (error) {
-            console.error("Error initiating Google OAuth:", error);
-        }
-    };
-
     return (
         <section className="relative bg-custom-gradient min-h-screen flex items-center justify-center">
             <div className="bg-white text-black mx-5 my-12 sm:py-16 sm:px-12 px-5 py-8 rounded-3xl flex flex-col gap-7 items-center max-w-[520px] w-full">
@@ -55,15 +46,16 @@ const SignInPage = () => {
                     <Button
                         endContent={<FcGoogle size={24} />}
                         className="text-lg py-8 px-9 border border-black rounded-full bg-white w-full"
-                        onClick={handleLogin}
+                        onClick={() => signIn("google", { redirectTo: appConfig.path.home })}
                     >
                         Sign in via Google
                     </Button>
                     <Button
-                        endContent={<FaApple size={24} />}
+                        endContent={<FaGithub size={24} />}
                         className="text-lg py-8 px-9 border border-black rounded-full bg-white w-full "
+                        onClick={() => signIn("github", { redirectTo: appConfig.path.home })}
                     >
-                        Sign in via Apple
+                        Sign in via Github
                     </Button>
                 </div>
 
