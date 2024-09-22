@@ -1,12 +1,12 @@
 "use client";
 
-import { setCurrentUser } from "@/redux/features/user/userSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import notify from "@/utils/notify";
 import api from "@/config/api";
+import { setCurrentUser } from "@/redux/features/userSlice";
 
 export default function AppSection() {
     const router = useRouter();

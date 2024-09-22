@@ -3,8 +3,8 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React, { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
-import { onClose, onOpen, selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
-import { selectLogged } from "@/redux/features/user/userSlice";
+import { onClose, onOpen, selectOpenSidebar } from "@/redux/features/sidebarSlice";
+import { selectLogged } from "@/redux/features/userSlice";
 import { useRouter } from "next/navigation";
 import ButtonToggleSidebar from "@/components/layout/sider/ButtonToggleSidebar";
 import OptionAccount from "@/components/layout/header/OptionAccount";

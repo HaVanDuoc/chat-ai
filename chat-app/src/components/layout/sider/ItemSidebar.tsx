@@ -1,6 +1,6 @@
 "use client";
 
-import { onToggle } from "@/redux/features/sidebar/sidebarSlice";
+import { onToggle } from "@/redux/features/sidebarSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import Link from "next/link";
 import React from "react";

@@ -2,11 +2,9 @@
 
 import api from "@/config/api";
 import { MessageProps } from "@/models";
-import {
-    addMessage,
-    selectConversations,
-} from "@/redux/features/conversation/conversationSlice";
-import { selectLogged } from "@/redux/features/user/userSlice";
+import { addMessage, selectConversations } from "@/redux/features";
+
+import { selectLogged } from "@/redux/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Textarea } from "@nextui-org/react";
 import React, { useState } from "react";

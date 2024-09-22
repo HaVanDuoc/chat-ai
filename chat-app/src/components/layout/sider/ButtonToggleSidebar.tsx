@@ -1,4 +1,4 @@
-import { onToggle } from "@/redux/features/sidebar/sidebarSlice";
+import { onToggle } from "@/redux/features/sidebarSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { Tooltip } from "@nextui-org/react";
 import React from "react";

@@ -1,8 +1,8 @@
 "use client";
 
 import SiderSection from "@/components/layout/sider/SiderSection";
-import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
-import { selectLogged } from "@/redux/features/user/userSlice";
+import { selectOpenSidebar } from "@/redux/features/sidebarSlice";
+import { selectLogged } from "@/redux/features/userSlice";
 import { useAppSelector } from "@/redux/hooks";
 import * as React from "react";
 

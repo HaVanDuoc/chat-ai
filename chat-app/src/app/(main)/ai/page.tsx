@@ -2,10 +2,8 @@
 
 import ContentConversation from "@/components/layout/conversation/ContentConversation";
 import { ConversationProps } from "@/models";
-import {
-    clearConversation,
-    selectConversations,
-} from "@/redux/features/conversation/conversationSlice";
+import { clearConversation, selectConversations } from "@/redux/features";
+
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React, { useEffect, useState } from "react";
 

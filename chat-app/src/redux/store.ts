@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import sidebarSlice from '@/redux/features/sidebar/sidebarSlice'
-import userSlice from '@/redux/features/user/userSlice'
-import conversationSlice from './features/conversation/conversationSlice'
+import sidebarSlice from '@/redux/features/sidebarSlice'
+import userSlice from '@/redux/features/userSlice'
+import conversationSlice from './features/conversationSlice'
 
 export const store = configureStore({
     reducer: {

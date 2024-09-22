@@ -2,7 +2,7 @@
 
 import ContentConversation from "@/components/layout/conversation/ContentConversation";
 import { ConversationProps } from "@/models";
-import { selectConversations } from "@/redux/features/conversation/conversationSlice";
+import { selectConversations } from "@/redux/features";
 import { useAppSelector } from "@/redux/hooks";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";

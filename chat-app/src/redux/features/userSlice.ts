@@ -9,7 +9,7 @@ interface UserState {
 const initialState: UserState = {
     current: null
 }
-export const authSlice = createSlice({
+export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
@@ -20,11 +20,11 @@ export const authSlice = createSlice({
     },
 })
 
-export const { setCurrentUser } = authSlice.actions
+export const { setCurrentUser } = userSlice.actions
 
 export const selectLogged = (state: RootState): boolean => {
     return !!state.user.current
 }
 export const selectCurrentUser = (state: RootState) => state.user.current
 
-export default authSlice.reducer
+export default userSlice.reducer

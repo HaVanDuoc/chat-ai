@@ -12,13 +12,10 @@ import { AiOutlineDelete } from "react-icons/ai";
 import ButtonToggleSidebar from "@/components/layout/sider/ButtonToggleSidebar";
 import ButtonNewChat from "@/components/common/ButtonNewChat";
 import ItemSidebar from "@/components/layout/sider/ItemSidebar";
-import { selectOpenSidebar } from "@/redux/features/sidebar/sidebarSlice";
-import { CHATS } from "@/data";
-import {
-    selectConversations,
-    setConversations,
-} from "@/redux/features/conversation/conversationSlice";
+import { selectOpenSidebar } from "@/redux/features/sidebarSlice";
 import appConfig from "@/config/appConfig";
+import { CHATS } from "@/data";
+import { selectConversations, setConversations } from "@/redux/features";
 
 const SiderSection = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux
