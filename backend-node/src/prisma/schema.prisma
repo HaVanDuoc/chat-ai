@@ -28,12 +28,7 @@ model User {
   conversationId String?       @db.ObjectId
   conversation   Conversation? @relation(fields: [conversationId], references: [id])
 
-  seenMessageIds String[]  @db.ObjectId
-  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
-
   acounts             Account[]
-  messages            Message[]
-  FederatedCredential FederatedCredential[]
 }
 
 model Account {
@@ -65,35 +60,17 @@ model Conversation {
   messagesIds String[]  @db.ObjectId
   messages    Message[]
 
-  userIds String[] @db.ObjectId
-  users   User[]
+  participants String[] @db.ObjectId
+  users        User[]
 }
 
 model Message {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  body      String?
-  image     String?
+  content   String?
   createdAt DateTime @default(now())
-
-  seenIds String[] @db.ObjectId
-  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
 
   conversationId String       @db.ObjectId
   conversation   Conversation @relation(fields: [conversationId], references: [id])
 
-  senderId String @db.ObjectId
-  serder   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
-}
-
-model FederatedCredential {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  provider  String
-  subject   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, subject]) // Composite unique constraint
+  role String // Có thể là "user" hoặc "assistant"
 }

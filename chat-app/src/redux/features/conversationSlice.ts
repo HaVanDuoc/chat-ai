@@ -55,5 +55,4 @@ export const selectConversations = (state: RootState) => state.conversation.conv
 export const selectConversationById = (state: RootState, conversationId: string) =>
     state.conversation.conversations.find(conversation => conversation.conversationId === conversationId);
 
-
 export default conversationSlice.reducer
