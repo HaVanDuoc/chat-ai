@@ -22,8 +22,7 @@ const SessionContainer = () => {
             dispatch(setCurrentUser(user));
             console.log("session", session);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [session, dispatch]);
 
     return null;
 };
