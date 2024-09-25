@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express"
 import passport from "passport"
 import dotenv from "dotenv"
 import { PrismaClient } from "@prisma/client"
-import "~/config/passport"
 import authControllers from "~/controllers/auth"
 
 dotenv.config()

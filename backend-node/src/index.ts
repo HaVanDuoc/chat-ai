@@ -35,21 +35,6 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(
-    session({
-        secret: SECRET_KEY,
-        resave: true,
-        saveUninitialized: true,
-        cookie: { maxAge: 4 * 60 * 60 * 1000 }, // 4 hour
-        store: new MongoStore({
-            mongoUrl: DATABASE_URL,
-        }),
-    }),
-)
-
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(passport.authenticate("session"))
 
 // Router
 initRoute(app)

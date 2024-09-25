@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, CircularProgress, Input } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
@@ -11,6 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {} from "@/config/authConfig";
 import { signIn } from "next-auth/react";
 import appConfig from "@/config/appConfig";
+import notify from "@/utils/notify";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
     email: z.string().email("*Invalid email address").nonempty("*Email is required"),
@@ -27,14 +29,41 @@ const SignInPage = () => {
         register,
         handleSubmit,
         reset,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
     });
+    const router = useRouter()
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = async (data: FormData) => {
         console.log("data submit", data);
-        reset();
+
+        try {
+            // Gửi yêu cầu POST đến API đăng nhập
+            const response = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            console.log("result", result)
+
+            // Xử lý kết quả từ API
+            if (response.ok) {
+                console.log("Login successful", result);
+                notify.success(result.message);
+                router.push(appConfig.path.home)
+            } else {
+                console.error("Login failed", result);
+                notify.error(result.error);
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
     };
 
     return (
@@ -92,9 +121,10 @@ const SignInPage = () => {
 
                     <Button
                         type="submit"
-                        className="bg-[#6928ea] text-white py-7 px-9 border-none rounded-lg capitalize font-semibold w-full"
+                        className="bg-[#6928ea] text-white py-7 px-9 border-none rounded-lg capitalize font-semibold w-full flex items-center"
+                        disabled={isSubmitting}
                     >
-                        Sign In
+                        {isSubmitting ? <CircularProgress label="Loading..." /> : "Sign In"}
                     </Button>
                 </form>
 
