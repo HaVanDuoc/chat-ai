@@ -1,14 +1,19 @@
-import { getTokenUser } from '@/actions/utils';
-import funcUtils from '@/utils/funcUtils';
+// services/useApiPost.ts
 
-const useApiPost = async <T extends unknown = unknown>(url: string, payload: T) => {
-    const isServer = typeof window === 'undefined';
-    const res = await fetch(funcUtils.combineURL(url), {
+const useApiPost = async (url: string, payload: unknown) => {
+    const response = await fetch(url, {
         method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
-        ...funcUtils.PostHeaders(isServer ? await getTokenUser() : undefined),
     });
-    return await res.json();
+
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+    }
+
+    return await response.json();
 };
 
 export default useApiPost;

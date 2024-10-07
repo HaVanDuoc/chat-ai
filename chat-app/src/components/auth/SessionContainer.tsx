@@ -1,8 +1,7 @@
 "use client";
 
-// import appConfig from "@/config/appConfig";
-import { UserProps } from "@/models";
-import { setCurrentUser } from "@/redux/features";
+import { IUser } from "@/models/user";
+import { setCurrentUser } from "@/redux/features/userSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { checkSessionExpired } from "@/utils";
 import { useSession } from "next-auth/react";
@@ -18,7 +17,7 @@ const SessionContainer = () => {
             checkSessionExpired(session); // session client
 
             // Fetch user data
-            const user = session.user as UserProps;
+            const user = session.user as IUser;
             dispatch(setCurrentUser(user));
             console.log("session", session);
         }

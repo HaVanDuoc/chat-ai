@@ -1,6 +1,11 @@
-import { ConversationProps, MessageProps } from '@/models';
+import { IMessage } from '@/models/message';
 import { RootState } from '@/redux/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+export type ConversationProps = {
+    id: string,
+    messages: IMessage[]
+}
 
 interface ConversationState {
     conversations: ConversationProps[];
@@ -9,8 +14,7 @@ interface ConversationState {
 const initialState: ConversationState = {
     conversations: [
         {
-            conversationId: "0",
-            participants: [],
+            id: "system",
             messages: [],
         }
     ],
@@ -29,19 +33,19 @@ export const conversationSlice = createSlice({
         },
         addMessage: (
             state,
-            action: PayloadAction<{ conversationId: string; message: MessageProps }>
+            action: PayloadAction<{ message: IMessage }>
         ) => {
-            const { conversationId, message } = action.payload;
-            const index = state.conversations.findIndex(box => box.conversationId === conversationId)
+            const { message } = action.payload;
+            const index = state.conversations.findIndex(box => box.id === message.conversationId)
 
             if (index >= 0) {
                 state.conversations[index].messages?.push(message)
             }
         },
         // Clear a conversation
-        clearConversation: (state, action: PayloadAction<{ conversationId: ConversationProps['conversationId'] }>) => {
+        clearConversation: (state, action: PayloadAction<{ conversationId: ConversationProps['id'] }>) => {
             state.conversations.forEach((conversation) => {
-                if (conversation.conversationId === action.payload.conversationId) {
+                if (conversation.id === action.payload.conversationId) {
                     conversation.messages = []; // Clear the messages array
                 }
             })
@@ -53,6 +57,6 @@ export const { setConversations, addConversation, clearConversation, addMessage 
 
 export const selectConversations = (state: RootState) => state.conversation.conversations;
 export const selectConversationById = (state: RootState, conversationId: string) =>
-    state.conversation.conversations.find(conversation => conversation.conversationId === conversationId);
+    state.conversation.conversations.find(conversation => conversation.id === conversationId);
 
 export default conversationSlice.reducer

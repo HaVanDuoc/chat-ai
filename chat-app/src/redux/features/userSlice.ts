@@ -1,9 +1,9 @@
-import { UserProps } from '@/models'
+import { IUser } from '@/models/user'
 import { RootState } from '@/redux/store'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface UserState {
-    current: UserProps | null
+    current: IUser | null
 }
 
 const initialState: UserState = {
@@ -13,7 +13,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setCurrentUser: (state, action: PayloadAction<UserProps>) => {
+        setCurrentUser: (state, action: PayloadAction<IUser>) => {
             state.current = action.payload
         },
 

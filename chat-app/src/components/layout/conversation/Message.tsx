@@ -1,37 +1,31 @@
-import { MessageProps } from "@/models";
+import { IMessage } from "@/models/message";
 import { marked } from "marked";
 import React from "react";
 import { GiMagicHat } from "react-icons/gi";
 
-interface IMessage {
-    message: MessageProps;
-}
+type Props = {
+  message: IMessage;
+};
 
-const Message: React.FC<IMessage> = ({ message }) => {
-    const markdown = marked(message.content);
+const Message: React.FC<Props> = ({ message }) => {
+  const markdown = marked(message.content as string);
 
-    return message.role === "user" ? (
-        // Message of user
-        <div className="md:w-fit max-w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto ">
-            <article
-                className="prose text-justify"
-                dangerouslySetInnerHTML={{ __html: markdown }}
-            />
-        </div>
-    ) : (
-        // Message of AI
-        <div className="w-full flex gap-8 items-start">
-            <div className="flex justify-center items-center mt-1">
-                <GiMagicHat size={24} className="opacity-80" />
-            </div>
-            <div className="flex flex-row gap-5 w-fit ">
-                <article
-                    className="prose text-justify"
-                    dangerouslySetInnerHTML={{ __html: markdown }}
-                />
-            </div>
-        </div>
-    );
+  return message.role === "user" ? (
+    // Message of user
+    <div className="md:w-fit max-w-2/3 h-auto bg-secondary-50 rounded-xl px-5 py-3 ml-auto ">
+      <article className="prose text-justify" dangerouslySetInnerHTML={{ __html: markdown }} />
+    </div>
+  ) : (
+    // Message of AI
+    <div className="w-full flex gap-8 items-start">
+      <div className="flex justify-center items-center mt-1">
+        <GiMagicHat size={24} className="opacity-80" />
+      </div>
+      <div className="flex flex-row gap-5 w-fit ">
+        <article className="prose text-justify" dangerouslySetInnerHTML={{ __html: markdown }} />
+      </div>
+    </div>
+  );
 };
 
 export default Message;

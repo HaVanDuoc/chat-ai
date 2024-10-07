@@ -14,8 +14,7 @@ import ButtonNewChat from "@/components/common/ButtonNewChat";
 import ItemSidebar from "@/components/layout/sider/ItemSidebar";
 import { selectOpenSidebar } from "@/redux/features/sidebarSlice";
 import appConfig from "@/config/appConfig";
-import { CHATS } from "@/data";
-import { selectConversations, setConversations } from "@/redux/features";
+import { selectConversations, setConversations } from "@/redux/features/conversationSlice";
 
 const SiderSection = () => {
     const chats = useAppSelector(selectConversations); // Get Box chats in redux
@@ -23,7 +22,7 @@ const SiderSection = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(setConversations(CHATS));
+        dispatch(setConversations([]));
     }, [dispatch]);
 
     return (
@@ -63,14 +62,14 @@ const SiderSection = () => {
                             {chats.map((chat, index) => (
                                 <ItemSidebar
                                     key={index}
-                                    content={chat.messages[0]?.content}
+                                    content={chat.messages[0]?.content as string}
                                     endContent={
                                         <Dropdown placement="right-start">
                                             <DropdownTrigger>
                                                 <Button
                                                     variant="light"
                                                     isIconOnly
-                                                    aria-label={`more-${chat.conversationId}`}
+                                                    aria-label={`more-${chat.id}`}
                                                 >
                                                     <FiMoreHorizontal size={20} />
                                                 </Button>
@@ -105,7 +104,7 @@ const SiderSection = () => {
                                             </DropdownMenu>
                                         </Dropdown>
                                     }
-                                    link={`${appConfig.path.ai}/${chat.conversationId}`}
+                                    link={`${appConfig.path.ai}/${chat.id}`}
                                 />
                             ))}
                         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import appConfig from "@/config/appConfig";
-import { selectCurrentUser } from "@/redux/features";
+import { selectCurrentUser } from "@/redux/features/userSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { signOut } from "next-auth/react";

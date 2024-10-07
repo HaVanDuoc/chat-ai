@@ -28,7 +28,7 @@ const SignInPage = () => {
     const {
         register,
         handleSubmit,
-        reset,
+        // reset,
         formState: { errors, isSubmitting },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
